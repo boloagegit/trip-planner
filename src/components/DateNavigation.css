@@ -169,6 +169,7 @@
     align-items: flex-start;
     gap: 0.25rem;
     text-align: left;
+    border-radius: 0;
 }
 
 .date-dropdown-item:last-child {
