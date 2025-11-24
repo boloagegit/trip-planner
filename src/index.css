@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
   /* Stippl-Inspired Palette */
   /* Light Mode (Default) */
@@ -55,8 +57,6 @@
   --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.4);
   --shadow-float: 0 10px 40px -10px rgba(0,0,0,0.5);
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 * {
   box-sizing: border-box;

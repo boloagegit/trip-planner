@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { geocodeEvents } from '../utils/geocoding';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapPin, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import './MapView.css';
 
 // Fix for default Leaflet marker icons in React

@@ -8,24 +8,22 @@ const STORAGE_KEY = 'trip_planner_notes';
 
 const NotesModal = ({ isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState('transport');
-    const [notes, setNotes] = useState({
-        transport: '',
-        general: '',
-        budget: [],
-        shopping: []
-    });
-
-    // Load from LocalStorage
-    useEffect(() => {
+    const [notes, setNotes] = useState(() => {
         const savedNotes = localStorage.getItem(STORAGE_KEY);
         if (savedNotes) {
             try {
-                setNotes(JSON.parse(savedNotes));
+                return JSON.parse(savedNotes);
             } catch (e) {
                 console.error('Failed to parse notes', e);
             }
         }
-    }, []);
+        return {
+            transport: '',
+            general: '',
+            budget: [],
+            shopping: []
+        };
+    });
 
     // Save to LocalStorage whenever notes change
     useEffect(() => {

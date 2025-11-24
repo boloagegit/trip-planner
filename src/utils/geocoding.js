@@ -34,7 +34,8 @@ export const geocodeLocation = async (locationName) => {
     if (!locationName) return null;
 
     // Clean up location name (remove emoji, extra spaces)
-    const cleanName = locationName.replace(/^[🗺️📍\s]+/, '').trim();
+    // eslint-disable-next-line no-misleading-character-class
+    const cleanName = locationName.replace(/^[🗺️📍\s]+/u, '').trim();
     if (!cleanName) return null;
 
     // Check cache first
