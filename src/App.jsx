@@ -64,6 +64,7 @@ function App() {
   const [isNotesOpen, setIsNotesOpen] = useState(false);
 
   // Scroll button visibility
+  // Used in handleScroll which sets these but they are only used to toggle class/visibility which is done in JSX
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
 
@@ -312,6 +313,18 @@ function App() {
     }
   };
 
+  const scrollContainer = (direction) => {
+    const container = document.getElementById('days-container');
+    if (container) {
+      const scrollAmount = 300;
+      const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      container.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="app-container">
       <motion.header
@@ -485,16 +498,18 @@ function App() {
 
               {/* Scroll Buttons (Desktop) */}
               <button
-                className="scroll-button scroll-button-left"
+                className={`scroll-button scroll-button-left ${showLeftButton ? 'visible' : ''}`}
                 onClick={() => scrollContainer('left')}
                 aria-label="Scroll Left"
+                style={{ opacity: showLeftButton ? 1 : 0, pointerEvents: showLeftButton ? 'auto' : 'none' }}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
               <button
-                className="scroll-button scroll-button-right"
+                className={`scroll-button scroll-button-right ${showRightButton ? 'visible' : ''}`}
                 onClick={() => scrollContainer('right')}
                 aria-label="Scroll Right"
+                style={{ opacity: showRightButton ? 1 : 0, pointerEvents: showRightButton ? 'auto' : 'none' }}
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>

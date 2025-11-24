@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -6,8 +6,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './EventCard.css';
 
-const EventCard = ({ event, onUpdate, onDelete }) => {
-    const { title, displayTime, time, type, description, location, image, fixed } = event;
+const EventCard = ({ event }) => {
+    const { title, displayTime, time, type, description, location } = event;
 
     const getTypeIcon = (type) => {
         switch (type) {
@@ -24,7 +24,7 @@ const EventCard = ({ event, onUpdate, onDelete }) => {
         if (!text) return [];
 
         // Find all matches of 🗺️ followed by location name
-        const mapEmojiPattern = /🗺️\s*([^\n🗺️]+)/g;
+        const mapEmojiPattern = /🗺️\s*([^\n🗺️]+)/gu;
         const locations = [];
         let match;
 
@@ -45,7 +45,7 @@ const EventCard = ({ event, onUpdate, onDelete }) => {
     const removeMapEmoji = (text) => {
         if (!text) return text;
         // Remove all instances of 🗺️ and optional following space
-        return text.replace(/🗺️\s*/g, '');
+        return text.replace(/🗺️\s*/gu, '');
     };
 
     // Collect all map locations from title, description, and location
