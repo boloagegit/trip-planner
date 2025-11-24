@@ -29,5 +29,5 @@ export default defineConfig({
       }
     })
   ],
-  base: '/2026-tokyo-trip/',
+  base: '/trip-planner/',
 })
