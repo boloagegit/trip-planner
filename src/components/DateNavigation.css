@@ -180,10 +180,10 @@
 }
 
 .date-dropdown-item.active {
-    background: rgba(255, 107, 107, 0.1);
-    border-left: 4px solid var(--primary);
-    padding-left: calc(1.25rem - 4px);
-    /* Compensate for border */
+    background: var(--primary);
+    border-left: none;
+    padding-left: 1.25rem;
+    color: white;
 }
 
 .dropdown-item-date {
@@ -198,10 +198,10 @@
 }
 
 .date-dropdown-item.active .dropdown-item-date {
-    color: var(--primary);
+    color: white;
 }
 
 .date-dropdown-item.active .dropdown-item-weekday {
-    color: var(--primary);
-    opacity: 0.8;
+    color: white;
+    opacity: 0.9;
 }
