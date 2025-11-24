@@ -63,10 +63,7 @@ function App() {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
 
-  // Scroll button visibility
-  // Used in handleScroll which sets these but they are only used to toggle class/visibility which is done in JSX
-  const [showLeftButton, setShowLeftButton] = useState(false);
-  const [showRightButton, setShowRightButton] = useState(true);
+
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -220,33 +217,7 @@ function App() {
     window.open(viewUrl, '_blank');
   };
 
-  // Monitor scroll position to show/hide buttons
-  useEffect(() => {
-    const container = document.getElementById('days-container');
-    if (!container) return;
 
-    const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const maxScroll = container.scrollWidth - container.clientWidth;
-
-      // Show left button if not at the start
-      setShowLeftButton(scrollLeft > 10);
-
-      // Show right button if not at the end
-      setShowRightButton(scrollLeft < maxScroll - 10);
-    };
-
-    // Initial check
-    handleScroll();
-
-    container.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [itinerary]); // Re-run when itinerary changes
 
   // Calculate trip statistics
   const calculateStats = () => {
@@ -313,17 +284,7 @@ function App() {
     }
   };
 
-  const scrollContainer = (direction) => {
-    const container = document.getElementById('days-container');
-    if (container) {
-      const scrollAmount = 300;
-      const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-      container.scrollTo({
-        left: targetScroll,
-        behavior: 'smooth'
-      });
-    }
-  };
+
 
   return (
     <div className="app-container">
@@ -496,23 +457,7 @@ function App() {
                 />
               ))}
 
-              {/* Scroll Buttons (Desktop) */}
-              <button
-                className={`scroll-button scroll-button-left ${showLeftButton ? 'visible' : ''}`}
-                onClick={() => scrollContainer('left')}
-                aria-label="Scroll Left"
-                style={{ opacity: showLeftButton ? 1 : 0, pointerEvents: showLeftButton ? 'auto' : 'none' }}
-              >
-                <FontAwesomeIcon icon={faChevronLeft} />
-              </button>
-              <button
-                className={`scroll-button scroll-button-right ${showRightButton ? 'visible' : ''}`}
-                onClick={() => scrollContainer('right')}
-                aria-label="Scroll Right"
-                style={{ opacity: showRightButton ? 1 : 0, pointerEvents: showRightButton ? 'auto' : 'none' }}
-              >
-                <FontAwesomeIcon icon={faChevronRight} />
-              </button>
+
             </div>
           </>
         ) : (
