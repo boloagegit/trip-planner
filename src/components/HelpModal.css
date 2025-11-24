@@ -1,0 +1,253 @@
+.help-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.help-modal-content {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-float);
+    position: relative;
+}
+
+.help-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.help-modal-close:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.help-modal-content h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1.8rem;
+}
+
+.help-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.help-section {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+}
+
+.help-section h3 {
+    color: var(--primary);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.help-step-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.help-step-content p {
+    margin: 0.5rem 0;
+}
+
+.help-step-content strong {
+    color: var(--text-primary);
+}
+
+.help-step-content ol,
+.help-step-content ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+}
+
+.help-step-content li {
+    margin: 0.5rem 0;
+}
+
+.template-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all 0.2s;
+    margin: 0.5rem 0;
+}
+
+.template-button:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.help-steps {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+}
+
+.help-steps>li {
+    counter-increment: step-counter;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 2.5rem;
+}
+
+.help-steps>li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: var(--primary);
+    color: white;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.help-steps strong {
+    color: var(--text-primary);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.help-steps p {
+    color: var(--text-secondary);
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.help-steps ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.help-steps ul li {
+    margin: 0.3rem 0;
+    line-height: 1.5;
+}
+
+.help-tips {
+    background: var(--bg-input);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--accent);
+    margin: 1.5rem 0;
+}
+
+.help-tips h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.help-tips ul {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.help-tips ul li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.help-tips code {
+    background: var(--bg-secondary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--primary);
+}
+
+.help-note {
+    background: rgba(255, 107, 107, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+    margin: 1.5rem 0;
+}
+
+.help-note strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.help-note p {
+    margin: 0.25rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .help-modal-content {
+        padding: 1.5rem;
+        max-height: 85vh;
+    }
+
+    .help-modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .help-section,
+    .help-tips {
+        padding: 1rem;
+    }
+
+    .help-steps>li {
+        padding-left: 2rem;
+    }
+
+    .help-steps>li::before {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.8rem;
+    }
+}

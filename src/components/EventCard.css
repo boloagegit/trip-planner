@@ -1,0 +1,230 @@
+.event-card {
+    display: flex;
+    flex-direction: column;
+    /* Changed from row to column */
+    gap: 0.6rem;
+    /* Reduced from 0.75rem */
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    /* Reduced from 1.25rem */
+    position: relative;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+    z-index: 1;
+    /* Ensure hovered card is on top */
+}
+
+/* Time at the top */
+.event-time-column {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    /* Reduced padding since no border */
+    /* border-bottom: 2px solid var(--bg-secondary); Removed */
+}
+
+.event-time {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.event-end-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Content area */
+.event-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    /* CRITICAL: Allows flex child to shrink below content size, enabling text wrapping */
+}
+
+.event-header {
+    display: flex;
+    align-items: flex-start;
+    /* Align to top so icon stays up if title wraps */
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.event-icon {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    flex-shrink: 0;
+    /* Prevent icon from squishing */
+}
+
+.event-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.4;
+    /* Increased slightly for better readability */
+    overflow-wrap: break-word;
+    /* Better than word-break for general text */
+    word-wrap: break-word;
+    hyphens: auto;
+    margin-top: 0.15rem;
+    /* Push down slightly to align with icon center */
+}
+
+.event-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.event-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* Increased from 0.5rem for multiple buttons */
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.meta-icon {
+    font-size: 1rem;
+}
+
+.map-location-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.map-location-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.map-location-btn .external-icon {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.map-location-btn:hover .external-icon {
+    opacity: 1;
+}
+
+
+
+/* Type-specific accents (Pill on the right or top) */
+.event-type-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Type Colors */
+.type-food .event-type-pill {
+    background: rgba(244, 114, 182, 0.15);
+    color: #D946EF;
+}
+
+.type-transport .event-type-pill {
+    background: rgba(167, 139, 250, 0.15);
+    color: #8B5CF6;
+}
+
+.type-hotel .event-type-pill {
+    background: rgba(251, 191, 36, 0.15);
+    color: #D97706;
+}
+
+.type-shopping .event-type-pill {
+    background: rgba(52, 211, 153, 0.15);
+    color: #059669;
+}
+
+.type-sightseeing .event-type-pill {
+    background: rgba(56, 189, 248, 0.15);
+    color: #0284C7;
+}
+
+/* Location Badge */
+.event-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background: var(--bg-secondary);
+    transition: background 0.2s;
+}
+
+.event-location:hover {
+    background: var(--border-color);
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+/* Editing State */
+.event-card.editing {
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px solid var(--primary);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.save-btn {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+}
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+}
