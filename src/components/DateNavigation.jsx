@@ -20,6 +20,24 @@ const DateNavigation = ({ itinerary, onDateClick }) => {
     useEffect(() => {
         if (!itinerary || itinerary.length === 0) return;
 
+        // Set initial active date
+        if (!activeDate) {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            const formattedToday = `${month}/${day}`;
+            const todayInItinerary = itinerary.find(d => d.date === formattedToday);
+
+            if (todayInItinerary) {
+                setActiveDate(formattedToday);
+                const index = itinerary.findIndex(d => d.date === formattedToday);
+                onDateClick(index);
+            } else {
+                setActiveDate(itinerary[0].date);
+                onDateClick(0);
+            }
+        }
+
         const handleScroll = () => {
             const container = document.getElementById('days-container');
             if (!container) return;
@@ -60,7 +78,7 @@ const DateNavigation = ({ itinerary, onDateClick }) => {
                 container.removeEventListener('scroll', handleScroll);
             }
         };
-    }, [itinerary, activeDate]);
+    }, [itinerary, activeDate, onDateClick]);
 
     const handleDateClick = (date, index) => {
         setActiveDate(date);
