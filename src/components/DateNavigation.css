@@ -58,8 +58,8 @@
 .date-nav-button.active {
     background: var(--primary);
     border-color: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    color: var(--bg-app);
+    box-shadow: var(--shadow-md);
 }
 
 .date-nav-date {
@@ -69,7 +69,7 @@
 
 .date-nav-button.active .date-nav-date,
 .date-nav-button.active .date-nav-weekday {
-    color: white;
+    color: var(--bg-app);
 }
 
 .date-nav-weekday {
@@ -184,7 +184,7 @@
     background: var(--primary);
     border-left: none;
     padding-left: 1.25rem;
-    color: white;
+    color: var(--bg-app);
 }
 
 .dropdown-item-date {
@@ -199,10 +199,10 @@
 }
 
 .date-dropdown-item.active .dropdown-item-date {
-    color: white;
+    color: var(--bg-app);
 }
 
 .date-dropdown-item.active .dropdown-item-weekday {
-    color: white;
+    color: var(--bg-app);
     opacity: 0.9;
 }

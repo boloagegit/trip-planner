@@ -45,7 +45,7 @@
 
 .help-modal-close:hover {
     background: var(--primary);
-    color: white;
+    color: var(--bg-app);
     border-color: var(--primary);
 }
 
@@ -102,7 +102,7 @@
     display: inline-block;
     padding: 0.75rem 1.5rem;
     background: var(--primary);
-    color: white;
+    color: var(--bg-app);
     text-decoration: none;
     border-radius: var(--radius-md);
     font-weight: 600;
@@ -114,6 +114,7 @@
     background: var(--accent);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    color: white;
 }
 
 .help-steps {
@@ -135,7 +136,7 @@
     left: 0;
     top: 0;
     background: var(--primary);
-    color: white;
+    color: var(--bg-app);
     width: 1.8rem;
     height: 1.8rem;
     border-radius: 50%;

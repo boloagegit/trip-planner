@@ -18,22 +18,23 @@
     padding: 1.5rem;
     margin-top: 5rem;
     margin-left: 1rem;
-    box-shadow: var(--shadow-float);
+    box-shadow: var(--shadow-lg);
     position: relative;
     min-width: 300px;
+    border: 1px solid var(--border-color);
 }
 
 .stats-modal-close {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     background: var(--bg-secondary);
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -43,15 +44,16 @@
 }
 
 .stats-modal-close:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
 }
 
 .stats-modal-content h2 {
     margin: 0 0 1.5rem 0;
     color: var(--text-primary);
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .stats-grid {
@@ -72,14 +74,14 @@
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
-    border-color: var(--primary);
+    border-color: var(--text-muted);
 }
 
 .stat-card-icon {
-    font-size: 2rem;
-    color: var(--primary);
+    font-size: 1.5rem;
+    color: var(--text-secondary);
 }
 
 .stat-card-content {
@@ -89,13 +91,13 @@
 }
 
 .stat-card-value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--text-primary);
 }
 
 .stat-card-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
@@ -118,10 +120,10 @@
     }
 
     .stat-card-icon {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     .stat-card-value {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
     }
 }
