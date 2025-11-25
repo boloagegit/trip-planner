@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faUtensils, faTrain, faBed, faBagShopping, faMapPin, faLocationArrow
+    faUtensils, faTrain, faBed, faBagShopping, faMapPin, faLocationArrow, faLink
 } from '@fortawesome/free-solid-svg-icons';
 import './EventCard.css';
 
@@ -48,27 +48,56 @@ const EventCard = ({ event }) => {
         return text.replace(/🗺️\s*/gu, '');
     };
 
-    // Collect all map locations from title, description, and location
+    // Extract URLs from text
+    const extractUrls = (text) => {
+        if (!text) return [];
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        return text.match(urlPattern) || [];
+    };
+
+    // Remove URLs from text for display
+    const removeUrls = (text) => {
+        if (!text) return text;
+        return text.replace(/(https?:\/\/[^\s]+)/g, '').trim();
+    };
+
+    // Collect all map locations
     const allMapLocations = [
         ...extractMapLocations(title),
         ...extractMapLocations(description),
         ...extractMapLocations(location)
     ];
 
-    // Clean display text (remove map emoji)
-    const cleanTitle = removeMapEmoji(title);
-    const cleanDescription = removeMapEmoji(description);
-    const cleanLocation = removeMapEmoji(location);
+    // Collect all URLs
+    const allUrls = [
+        ...extractUrls(title),
+        ...extractUrls(description),
+        ...extractUrls(location)
+    ];
+
+    // Clean display text (remove map emoji AND URLs)
+    const cleanTitle = removeUrls(removeMapEmoji(title));
+    const cleanDescription = removeUrls(removeMapEmoji(description));
+    const cleanLocation = removeUrls(removeMapEmoji(location));
 
     const openGoogleMaps = (locationName) => {
         const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName)}`;
         window.open(mapsUrl, '_blank');
     };
 
+    const getDomain = (url) => {
+        try {
+            const domain = new URL(url).hostname;
+            return domain.replace('www.', '');
+        } catch (e) {
+            return 'Link';
+        }
+    };
+
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             className={`event-card ${type}`}
@@ -85,12 +114,13 @@ const EventCard = ({ event }) => {
 
                 {cleanDescription && <p className="event-description">{cleanDescription}</p>}
 
-                {/* Map Locations - support multiple */}
-                {allMapLocations.length > 0 && (
+                {/* Action Buttons Container */}
+                {(allMapLocations.length > 0 || allUrls.length > 0) && (
                     <div className="event-meta">
+                        {/* Map Locations */}
                         {allMapLocations.map((loc, index) => (
                             <button
-                                key={index}
+                                key={`map-${index}`}
                                 className="map-location-btn"
                                 onClick={() => openGoogleMaps(loc)}
                                 title="在 Google Maps 中查看"
@@ -99,11 +129,26 @@ const EventCard = ({ event }) => {
                                 <FontAwesomeIcon icon={faLocationArrow} className="external-icon" />
                             </button>
                         ))}
+
+                        {/* URL Links */}
+                        {allUrls.map((url, index) => (
+                            <a
+                                key={`link-${index}`}
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="map-location-btn link-btn"
+                                title={url}
+                            >
+                                <span>{getDomain(url)}</span>
+                                <FontAwesomeIcon icon={faLink} className="external-icon" />
+                            </a>
+                        ))}
                     </div>
                 )}
 
-                {/* Regular location (no map emoji) */}
-                {!allMapLocations.length && cleanLocation && (
+                {/* Regular location (no map emoji and no links) */}
+                {!allMapLocations.length && !allUrls.length && cleanLocation && (
                     <div className="event-meta">
                         <FontAwesomeIcon icon={faMapPin} className="meta-icon" />
                         <span>{cleanLocation}</span>

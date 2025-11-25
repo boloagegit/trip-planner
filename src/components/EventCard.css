@@ -164,6 +164,15 @@
     opacity: 0.5;
 }
 
+.map-location-btn.link-btn {
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.map-location-btn.link-btn:hover {
+    color: var(--text-primary);
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
 
