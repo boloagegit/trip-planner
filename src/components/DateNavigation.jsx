@@ -28,11 +28,11 @@ const DateNavigation = ({ itinerary, onDateClick, activeDate, onDateChange }) =>
             const todayInItinerary = itinerary.find(d => d.date === formattedToday);
 
             if (todayInItinerary) {
-                setActiveDate(formattedToday);
+                onDateChange(formattedToday);
                 const index = itinerary.findIndex(d => d.date === formattedToday);
                 onDateClick(index);
             } else {
-                setActiveDate(itinerary[0].date);
+                onDateChange(itinerary[0].date);
                 onDateClick(0);
             }
         }
