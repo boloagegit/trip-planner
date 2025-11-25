@@ -1,22 +1,15 @@
 .day-column {
-    flex: 0 0 auto;
-    min-width: 320px;
-    max-width: 380px;
+    width: 100%;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    padding: 1rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    height: auto;
-    /* max-height: 80vh; Removed fixed height */
+    gap: 1rem;
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    /* overflow: hidden; Removed to prevent clipping */
 }
 
 .day-column:hover {
@@ -27,8 +20,7 @@
 .day-header {
     margin-bottom: 1.5rem;
     text-align: left;
-    padding-bottom: 0.75rem;
-    /* Reduced from 1rem */
+    padding-bottom: 1rem;
     border-bottom: 2px dashed var(--border-color);
     display: flex;
     justify-content: space-between;
@@ -55,23 +47,9 @@
 }
 
 .day-events {
-    /* flex: 1; Removed flex: 1 so it takes natural height */
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /* overflow-y: auto; Removed internal scrolling */
-    padding-right: 0;
-    /* Removed scrollbar padding */
-}
-
-/* Custom scrollbar for the events list */
-.day-events::-webkit-scrollbar {
-    width: 4px;
-}
-
-.day-events::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 4px;
 }
 
 .empty-day {
@@ -102,9 +80,7 @@
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
     .day-column {
-        /* Keep fixed width for horizontal scroll */
-        min-width: 300px;
-        max-width: 340px;
+        padding: 1rem;
     }
 
     .day-date {
@@ -118,15 +94,10 @@
 }
 
 @media (max-width: 480px) {
-    .day-column {
-        padding: 1rem;
-        min-width: 280px;
-        max-width: 320px;
-    }
-
     .day-header {
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 
     .day-date {
