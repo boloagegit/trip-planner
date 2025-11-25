@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import Papa from 'papaparse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChartLine, faFileExcel, faCircleInfo, faGear,
+  faFileExcel,
   faMagnifyingGlass,
   faSun, faMoon,
-  faShareNodes, faArrowsRotate,
-  faChevronLeft, faChevronRight, faClipboardList, faMapLocationDot,
-  faBook
+  faClipboardList,
+  faBook, faBars
 } from '@fortawesome/free-solid-svg-icons';
 import DayView from './components/DayView';
 import MapView from './components/MapView';
 import SettingsModal from './components/SettingsModal';
 import SkeletonDay from './components/SkeletonDay';
-import DateNavigation from './components/DateNavigation';
 import HelpModal from './components/HelpModal';
-import StatsModal from './components/StatsModal';
-import NotesModal from './components/NotesModal';
+import NotesView from './components/NotesView';
+import Sidebar from './components/Sidebar';
 import { parseMatrixCSV, extractSheetId, parseSheetUrl } from './utils/csvParser';
 import './App.css';
 
@@ -60,8 +57,7 @@ function App() {
   const [error, setError] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
-  const [isStatsOpen, setIsStatsOpen] = useState(false);
-  const [isNotesOpen, setIsNotesOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Active date for navigation
   const [activeDate, setActiveDate] = useState('');
@@ -149,7 +145,7 @@ function App() {
     };
 
     fetchData();
-  }, [sheetUrl]);
+  }, [sheetUrl, itinerary.length]);
 
   useEffect(() => {
     localStorage.setItem('tokyo-trip-itinerary', JSON.stringify(itinerary));
@@ -183,7 +179,7 @@ function App() {
         handleDateClick(initialIndex);
       }, 100);
     }
-  }, [itinerary]);
+  }, [itinerary, itinerary.length]);
 
   const handleUpdateSettings = (newUrl, newTitle) => {
     setSheetUrl(newUrl);
@@ -295,22 +291,11 @@ function App() {
   // Handle date click from navigation
   // Handle date click from navigation
   const handleDateClick = (index) => {
-    const container = document.getElementById('days-container');
     const element = document.getElementById(`day-${index}`);
-
-    if (container && element) {
-      // Calculate the position to scroll to
-      // We want to center the element or align it to the start, but only horizontally
-      const containerRect = container.getBoundingClientRect();
-      const elementRect = element.getBoundingClientRect();
-
-      // Calculate relative position
-      const offsetLeft = elementRect.left - containerRect.left;
-
-      // Scroll the container
-      container.scrollBy({
-        left: offsetLeft,
-        behavior: 'smooth'
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     }
   };
@@ -318,223 +303,154 @@ function App() {
 
 
   return (
-    <div className="app-container">
-      <motion.header
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="header"
-      >
-        {/* Top Bar - Left: Data/Content, Right: Actions/Settings */}
-        <div className="top-bar">
-          <div className="top-bar-left">
-            {itinerary.length > 0 && (
-              <>
-                <button
-                  onClick={() => setIsStatsOpen(true)}
-                  className="icon-button"
-                  title="查看行程統計"
-                >
-                  <FontAwesomeIcon icon={faChartLine} />
-                </button>
-                <div className="view-toggle">
-                  <button
-                    className={`toggle-button ${viewMode === 'list' ? 'active' : ''}`}
-                    onClick={() => setViewMode('list')}
-                    title="列表檢視"
-                  >
-                    <FontAwesomeIcon icon={faClipboardList} />
-                  </button>
-                  <button
-                    className={`toggle-button ${viewMode === 'map' ? 'active' : ''}`}
-                    onClick={() => setViewMode('map')}
-                    title="地圖檢視"
-                  >
-                    <FontAwesomeIcon icon={faMapLocationDot} />
-                  </button>
-                </div>
-              </>
-            )}
-            {sheetUrl && (
-              <div
-                className="connection-status"
-                title="已連結 Google Sheet - 點擊開啟"
-                onClick={handleOpenSheet}
-              >
-                <FontAwesomeIcon icon={faFileExcel} className="connection-icon" />
-              </div>
-            )}
-          </div>
-          <div className="top-bar-right">
-            {itinerary.length > 0 && (
-              <>
-                <button
-                  onClick={handleReset}
-                  className="icon-button"
-                  title="重新載入 Google Sheet 資料"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <div className="button-spinner"></div>
-                  ) : (
-                    <FontAwesomeIcon icon={faArrowsRotate} />
-                  )}
-                </button>
-                <button
-                  onClick={handleShare}
-                  className="icon-button"
-                  title="複製分享連結到剪貼簿"
-                >
-                  <FontAwesomeIcon icon={faShareNodes} />
-                </button>
-              </>
-            )}
-            <button
-              onClick={() => setIsHelpOpen(true)}
-              className="icon-button"
-              title="使用說明"
-            >
-              <FontAwesomeIcon icon={faCircleInfo} />
-            </button>
-
-            <button
-              onClick={toggleTheme}
-              className="icon-button theme-toggle"
-              title={theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'}
-              style={{ overflow: 'hidden', position: 'relative' }}
-            >
-              <motion.div
-                key={theme}
-                initial={{ y: -20, opacity: 0, rotate: -90 }}
-                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                exit={{ y: 20, opacity: 0, rotate: 90 }}
-                transition={{ duration: 0.2 }}
-              >
-                <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
-              </motion.div>
-            </button>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="icon-button"
-              title="設定 Google Sheet URL 和標題"
-            >
-              <FontAwesomeIcon icon={faGear} />
-            </button>
-          </div>
-        </div>
-
-        <h1>{manualTitle || tripMetadata?.title || 'Trip Planner'}</h1>
-        <p>{tripMetadata?.startDate ? `${tripMetadata.startDate} - ${tripMetadata.endDate}` : 'Plan your journey'}</p>
-
-        {/* Search Bar */}
-        {itinerary.length > 0 && (
-          <div className="search-bar-container" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center', maxWidth: '600px', margin: '0.75rem auto 1rem' }}>
-            <div className="search-bar" style={{ margin: 0, flex: 1 }}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
-              <input
-                type="text"
-                className="search-input"
-                placeholder="搜尋活動、地點..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <button
-              onClick={() => setIsNotesOpen(true)}
-              className="icon-button"
-              title="隨身筆記本"
-              style={{ width: '44px', height: '44px', background: 'var(--bg-secondary)', borderRadius: '50%', border: '1px solid var(--border-color)' }}
-            >
-              <FontAwesomeIcon icon={faBook} />
-            </button>
-          </div>
-        )}
-
-        {error && <div className="error-message">{error}</div>}
-      </motion.header>
-
-      {isLoading ? (
-        /* Skeleton Loading State */
-        <div className="days-container">
-          <SkeletonDay />
-          <SkeletonDay />
-          <SkeletonDay />
-          <SkeletonDay />
-        </div>
-      ) : itinerary.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-state-icon">
-            <FontAwesomeIcon icon={faClipboardList} />
-          </div>
-          <h2>歡迎使用旅程規劃工具</h2>
-          <p>點擊右上角的 ⚙️ 設定 Google Sheet 連結開始使用</p>
-          <p>或點擊 ℹ️ 查看詳細使用說明</p>
-          <button onClick={() => setIsSettingsOpen(true)} className="primary get-started-btn">
-            開始設定
-          </button>
-        </div>
-      ) : (
-        viewMode === 'list' ? (
-          <>
-            <DateNavigation
-              itinerary={itinerary}
-              onDateClick={handleDateClick}
-              activeDate={activeDate}
-              onDateChange={setActiveDate}
-            />
-
-            <div className="days-container" id="days-container">
-              {filteredItinerary.map((day, index) => (
-                <DayView
-                  key={day.date}
-                  day={day}
-                  index={index}
-                  id={`day-${index}`}
-                />
-              ))}
-
-
-            </div>
-          </>
-        ) : (
-          <div className="map-view-wrapper">
-            <MapView itinerary={filteredItinerary} />
-          </div>
-        )
-      )}
-
-      <StatsModal
-        isOpen={isStatsOpen}
-        onClose={() => setIsStatsOpen(false)}
+    <div className="main-layout">
+      <Sidebar
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        itinerary={itinerary}
+        activeDate={activeDate}
+        setActiveDate={setActiveDate}
+        handleDateClick={handleDateClick}
+        isOpen={isSidebarOpen}
         stats={stats}
+        handleReset={handleReset}
+        handleShare={handleShare}
+        setIsHelpOpen={setIsHelpOpen}
+        setIsSettingsOpen={setIsSettingsOpen}
+        isLoading={isLoading}
       />
-
-      <HelpModal
-        isOpen={isHelpOpen}
-        onClose={() => setIsHelpOpen(false)}
-      />
-
-      <NotesModal
-        isOpen={isNotesOpen}
-        onClose={() => setIsNotesOpen(false)}
-      />
-
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        currentUrl={sheetUrl}
-        currentTitle={manualTitle}
-        onSave={handleUpdateSettings}
-      />
-
-      {/* Toast Notification */}
-      {
-        toast.show && (
-          <div className={`toast toast-${toast.type}`}>
-            {toast.message}
+      <main className="main-content">
+        {isSidebarOpen && <div className="overlay" onClick={() => setIsSidebarOpen(false)}></div>}
+        <header className="header">
+          {/* Top Bar - Left: Data/Content, Right: Actions/Settings */}
+          <div className="top-bar">
+            <div className="top-bar-left">
+            <button className="icon-button mobile-only" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+              <FontAwesomeIcon icon={faBars} />
+            </button>
+              {itinerary.length > 0 && (
+                <>
+                </>
+              )}
+              {sheetUrl && (
+                <div
+                  className="connection-status"
+                  title="已連結 Google Sheet - 點擊開啟"
+                  onClick={handleOpenSheet}
+                >
+                  <FontAwesomeIcon icon={faFileExcel} className="connection-icon" />
+                </div>
+              )}
+            </div>
+            <div className="top-bar-right">
+              <button
+                onClick={toggleTheme}
+                className="icon-button theme-toggle"
+                title={theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'}
+                style={{ overflow: 'hidden', position: 'relative' }}
+              >
+                <div key={theme}>
+                  <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+                </div>
+              </button>
+            </div>
           </div>
-        )
-      }
+
+          <h1>{manualTitle || tripMetadata?.title || 'Trip Planner'}</h1>
+          <p>{tripMetadata?.startDate ? `${tripMetadata.startDate} - ${tripMetadata.endDate}` : 'Plan your journey'}</p>
+
+          {/* Search Bar */}
+          {itinerary.length > 0 && (
+            <div className="search-bar-container" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center', maxWidth: '600px', margin: '0.75rem auto 1rem' }}>
+              <div className="search-bar" style={{ margin: 0, flex: 1 }}>
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="搜尋活動、地點..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={() => setViewMode('notes')}
+                className="icon-button"
+                title="隨身筆記本"
+                style={{ width: '44px', height: '44px', background: 'var(--bg-secondary)', borderRadius: '50%', border: '1px solid var(--border-color)' }}
+              >
+                <FontAwesomeIcon icon={faBook} />
+              </button>
+            </div>
+          )}
+
+          {error && <div className="error-message">{error}</div>}
+        </header>
+
+        <div className="app-container">
+          {isLoading ? (
+            /* Skeleton Loading State */
+            <div className="days-container">
+              <SkeletonDay />
+              <SkeletonDay />
+              <SkeletonDay />
+              <SkeletonDay />
+            </div>
+          ) : itinerary.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-state-icon">
+                <FontAwesomeIcon icon={faClipboardList} />
+              </div>
+              <h2>歡迎使用旅程規劃工具</h2>
+              <p>點擊右上角的 ⚙️ 設定 Google Sheet 連結開始使用</p>
+              <p>或點擊 ℹ️ 查看詳細使用說明</p>
+              <button onClick={() => setIsSettingsOpen(true)} className="primary get-started-btn">
+                開始設定
+              </button>
+            </div>
+          ) : (
+            viewMode === 'list' ? (
+              <div className="days-container" id="days-container">
+                {filteredItinerary.map((day, index) => (
+                  <DayView
+                    key={day.date}
+                    day={day}
+                    index={index}
+                    id={`day-${index}`}
+                  />
+                ))}
+              </div>
+            ) : viewMode === 'map' ? (
+              <div className="map-view-wrapper">
+                <MapView itinerary={filteredItinerary} />
+              </div>
+            ) : (
+              <NotesView />
+            )
+          )}
+        </div>
+
+        <HelpModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+        />
+
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          currentUrl={sheetUrl}
+          currentTitle={manualTitle}
+          onSave={handleUpdateSettings}
+        />
+
+        {/* Toast Notification */}
+        {
+          toast.show && (
+            <div className={`toast toast-${toast.type}`}>
+              {toast.message}
+            </div>
+          )
+        }
+      </main>
     </div>
   );
 }

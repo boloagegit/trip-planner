@@ -1,3 +1,45 @@
+.main-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+}
+
+.main-content {
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -19,14 +61,11 @@
 
 .days-container {
   display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  padding: 0.5rem 1rem 1rem;
-  position: relative;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  /* Smooth scrolling on iOS */
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .days-container::after {

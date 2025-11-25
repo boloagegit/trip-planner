@@ -3,7 +3,7 @@ import SkeletonCard from './SkeletonCard';
 import './SkeletonDay.css';
 
 const SkeletonDay = () => {
-    const numCards = Math.floor(Math.random() * 3) + 2; // 2 to 4 cards
+    const numCards = 3; // Use a fixed number of cards for a consistent skeleton
 
     return (
         <div className="skeleton-day">
