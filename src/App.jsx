@@ -337,22 +337,13 @@ function App() {
                 >
                   <FontAwesomeIcon icon={faChartLine} />
                 </button>
-                <div className="view-toggle">
-                  <button
-                    className={`toggle-button ${viewMode === 'list' ? 'active' : ''}`}
-                    onClick={() => setViewMode('list')}
-                    title="列表檢視"
-                  >
-                    <FontAwesomeIcon icon={faClipboardList} />
-                  </button>
-                  <button
-                    className={`toggle-button ${viewMode === 'map' ? 'active' : ''}`}
-                    onClick={() => setViewMode('map')}
-                    title="地圖檢視"
-                  >
-                    <FontAwesomeIcon icon={faMapLocationDot} />
-                  </button>
-                </div>
+                <button
+                  className="icon-button"
+                  onClick={() => setViewMode(viewMode === 'list' ? 'map' : 'list')}
+                  title={viewMode === 'list' ? "切換至地圖檢視" : "切換至列表檢視"}
+                >
+                  <FontAwesomeIcon icon={viewMode === 'list' ? faMapLocationDot : faClipboardList} />
+                </button>
               </>
             )}
             {sheetUrl && (
@@ -477,23 +468,28 @@ function App() {
         viewMode === 'list' ? (
           <>
             <DateNavigation
-              itinerary={itinerary}
+              itinerary={filteredItinerary}
               onDateClick={handleDateClick}
               activeDate={activeDate}
               onDateChange={setActiveDate}
             />
 
             <div className="days-container" id="days-container">
-              {filteredItinerary.map((day, index) => (
-                <DayView
-                  key={day.date}
-                  day={day}
-                  index={index}
-                  id={`day-${index}`}
-                />
-              ))}
-
-
+              {filteredItinerary.length > 0 ? (
+                filteredItinerary.map((day, index) => (
+                  <DayView
+                    key={day.date}
+                    day={day}
+                    index={index}
+                    id={`day-${index}`}
+                  />
+                ))
+              ) : (
+                <div className="no-results">
+                  <FontAwesomeIcon icon={faMagnifyingGlass} className="no-results-icon" />
+                  <p>找不到符合「{searchQuery}」的行程</p>
+                </div>
+              )}
             </div>
           </>
         ) : (

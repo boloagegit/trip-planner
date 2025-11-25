@@ -25,20 +25,14 @@ const DayView = ({ day, id }) => {
         <span className="day-weekday">{day.dayOfWeek}</span>
       </div>
 
-      <motion.div
-        className="day-events"
-        variants={{
-          visible: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-          hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
-        }}
-        initial="hidden"
-        animate="visible"
-      >
+      <div className="day-events">
         {day.events.map(event => (
-          <motion.div key={event.id} variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 }
-          }}>
+          <motion.div
+            key={event.id}
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <EventCard
               event={event}
             />
@@ -51,7 +45,7 @@ const DayView = ({ day, id }) => {
             <p>{EMPTY_DAY_MESSAGES.line2}</p>
           </div>
         )}
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

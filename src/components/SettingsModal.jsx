@@ -13,7 +13,7 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
         const csvUrl = parseSheetUrl(url);
 
         if (!csvUrl) {
-            setError('Invalid Google Sheet URL. Please make sure it is a public Google Sheet link.');
+            setError('無效的 Google Sheet 連結。請確認連結是否公開。');
             return;
         }
 
@@ -40,7 +40,7 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
                             className="modal-content"
                         >
                             <h2 className="modal-title">
-                                Settings
+                                設定
                             </h2>
 
                             <form onSubmit={handleSubmit}>
@@ -49,14 +49,14 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
                                         htmlFor="tripTitle"
                                         className="form-label"
                                     >
-                                        Trip Title (Optional)
+                                        行程標題 (選填)
                                     </label>
                                     <input
                                         id="tripTitle"
                                         type="text"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
-                                        placeholder="e.g. 2026 Tokyo Trip"
+                                        placeholder="例如：2026 東京之旅"
                                         className="form-input"
                                     />
 
@@ -64,7 +64,7 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
                                         htmlFor="sheetUrl"
                                         className="form-label"
                                     >
-                                        Google Sheet URL
+                                        Google Sheet 連結
                                     </label>
                                     <input
                                         id="sheetUrl"
@@ -83,7 +83,7 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
                                         </p>
                                     )}
                                     <p className="helper-text">
-                                        Paste the full URL of your Google Sheet. Make sure the sheet is visible to anyone with the link (File &gt; Share &gt; Publish to web or Share with anyone).
+                                        請貼上您的 Google Sheet 完整連結。請確保試算表已開啟「知道連結的人均可檢視」權限 (檔案 &gt; 共用 &gt; 發布到網路 或 共用)。
                                     </p>
                                 </div>
 
@@ -93,13 +93,13 @@ const SettingsModal = ({ isOpen, onClose, currentUrl, currentTitle, onSave }) =>
                                         onClick={onClose}
                                         className="btn-cancel"
                                     >
-                                        Cancel
+                                        取消
                                     </button>
                                     <button
                                         type="submit"
                                         className="btn-save"
                                     >
-                                        Save & Reload
+                                        儲存並重新載入
                                     </button>
                                 </div>
                             </form>
