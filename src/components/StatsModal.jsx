@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCalendarDays, faLocationDot, faUtensils, faTrain } from '@fortawesome/free-solid-svg-icons';
 import './StatsModal.css';

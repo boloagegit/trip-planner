@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import Papa from 'papaparse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -152,7 +151,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('tokyo-trip-itinerary', JSON.stringify(itinerary));
-  }, [itinerary]);
+  }, [itinerary, itinerary.length]);
 
   const handleUpdateSettings = (newUrl, newTitle) => {
     setSheetUrl(newUrl);

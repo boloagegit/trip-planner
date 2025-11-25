@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faUtensils, faTrain, faBed, faBagShopping, faMapPin, faLocationArrow
@@ -22,22 +21,16 @@ const EventCard = ({ event }) => {
     // Extract ALL locations with map emoji from text
     const extractMapLocations = (text) => {
         if (!text) return [];
-
-        // Find all matches of 🗺️ followed by location name
-        const mapEmojiPattern = /🗺️\s*([^\n🗺️]+)/gu;
         const locations = [];
-        let match;
-
-        while ((match = mapEmojiPattern.exec(text)) !== null) {
-            if (match[1]) {
-                // Trim and clean up the location name (remove the emoji)
-                const cleanLocation = match[1].trim();
-                if (cleanLocation) {
-                    locations.push(cleanLocation);
-                }
+        const parts = text.split('🗺️');
+        // Start from the second part, as the first part is text before the first emoji
+        for (let i = 1; i < parts.length; i++) {
+            // Take the content up to the first newline
+            const locationText = parts[i].split('\n')[0].trim();
+            if (locationText) {
+                locations.push(locationText);
             }
         }
-
         return locations;
     };
 

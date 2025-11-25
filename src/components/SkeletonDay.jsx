@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SkeletonCard from './SkeletonCard';
 import './SkeletonDay.css';
 
 const SkeletonDay = () => {
+    const [numCards, setNumCards] = useState(3);
+
+    useEffect(() => {
+        setNumCards(Math.floor(Math.random() * 3) + 2);
+    }, []);
+
     return (
         <div className="skeleton-day">
             <div className="skeleton-day-header">
@@ -10,9 +16,9 @@ const SkeletonDay = () => {
                 <div className="skeleton-weekday"></div>
             </div>
             <div className="skeleton-events">
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
+                {Array.from({ length: numCards }).map((_, i) => (
+                    <SkeletonCard key={i} />
+                ))}
             </div>
         </div>
     );
