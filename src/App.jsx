@@ -63,7 +63,8 @@ function App() {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
 
-
+  // Active date for navigation
+  const [activeDate, setActiveDate] = useState('');
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -152,6 +153,36 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('tokyo-trip-itinerary', JSON.stringify(itinerary));
+  }, [itinerary]);
+
+  // Set the initial date on itinerary load
+  useEffect(() => {
+    if (itinerary.length > 0) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+
+      const todayInItinerary = itinerary.find(d => d.date === formattedDate);
+
+      let initialDate;
+      let initialIndex = 0;
+
+      if (todayInItinerary) {
+        initialDate = todayInItinerary.date;
+        initialIndex = itinerary.findIndex(d => d.date === formattedDate);
+      } else {
+        initialDate = itinerary[0].date;
+      }
+
+      setActiveDate(initialDate);
+
+      // Scroll to the initial date
+      setTimeout(() => {
+        handleDateClick(initialIndex);
+      }, 100);
+    }
   }, [itinerary]);
 
   const handleUpdateSettings = (newUrl, newTitle) => {
@@ -445,7 +476,12 @@ function App() {
       ) : (
         viewMode === 'list' ? (
           <>
-            <DateNavigation itinerary={itinerary} onDateClick={handleDateClick} />
+            <DateNavigation
+              itinerary={itinerary}
+              onDateClick={handleDateClick}
+              activeDate={activeDate}
+              onDateChange={setActiveDate}
+            />
 
             <div className="days-container" id="days-container">
               {filteredItinerary.map((day, index) => (

@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
 import './DateNavigation.css';
 
-const DateNavigation = ({ itinerary, onDateClick }) => {
-    const [activeDate, setActiveDate] = useState('');
+const DateNavigation = ({ itinerary, onDateClick, activeDate, onDateChange }) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -44,7 +43,7 @@ const DateNavigation = ({ itinerary, onDateClick }) => {
             });
 
             if (mostVisibleDay && mostVisibleDay !== activeDate) {
-                setActiveDate(mostVisibleDay);
+                onDateChange(mostVisibleDay);
             }
         };
 
@@ -63,7 +62,7 @@ const DateNavigation = ({ itinerary, onDateClick }) => {
     }, [itinerary, activeDate]);
 
     const handleDateClick = (date, index) => {
-        setActiveDate(date);
+        onDateChange(date);
         onDateClick(index);
         setIsDropdownOpen(false);
     };
