@@ -76,6 +76,46 @@ const parseOptions = (text) => {
 };
 
 /**
+ * Parses simple "Label: Value" format.
+ * Separators: Newline (\n) or Semicolon (;)
+ * Example:
+ * A: Option A
+ * B: Option B
+ */
+const parseSimplifiedOptions = (text) => {
+    if (!text) return null;
+
+    // Split by newline or semicolon
+    // We also treat literal "\n" string as newline just in case
+    const parts = text.split(/[\n;]|\\n/);
+
+    const options = parts.map(part => {
+        const trimmed = part.trim();
+        if (!trimmed) return null;
+
+        // Find the first colon
+        const colonIndex = trimmed.indexOf(':');
+        if (colonIndex <= 0) return null; // No colon or colon at start
+
+        const label = trimmed.substring(0, colonIndex).trim();
+        const value = trimmed.substring(colonIndex + 1).trim();
+
+        // Basic validation: Label shouldn't be too long (heuristic)
+        // If label is "Review flight details", it might be a title, not a label "Review flight details"
+        // Let's assume labels are reasonably short (e.g. < 20 chars) or alphanumeric?
+        // For now, accept anything if it looks like Key: Value.
+
+        return { label, value };
+    }).filter(opt => opt !== null);
+
+    // To prevent false positives (like "Time: 12:00" in a description),
+    // we might want to ensure we found at least one valid option?
+    // Or maybe check if the simplified format accounts for a significant portion of the text?
+
+    return options.length > 0 ? options : null;
+};
+
+/**
  * Parses the matrix-style CSV data into the application's itinerary format.
  * @param {Array} data - The parsed CSV data array (array of objects).
  * @returns {Array} - The formatted itinerary array.
@@ -105,14 +145,34 @@ export const parseMatrixCSV = (data) => {
             const content = row[dateKey];
             if (content && content.trim()) {
                 let title = content.trim();
-                const options = parseOptions(title);
+                let options = parseOptions(title); // Try legacy/JSON format first
 
-                // If options are found, strip them from the title
                 if (options) {
+                    // JSON format found
                     title = title.replace(/\[\s*(\{.*?\})\s*\]/, '').trim();
-                    // If title becomes empty (e.g. the cell was just "[{...}]"), set a default
-                    if (!title) {
-                        title = '行程選項';
+                    if (!title) title = '行程選項';
+                } else {
+                    // Try simplified format
+                    const simpleOptions = parseSimplifiedOptions(title);
+                    if (simpleOptions) {
+                        options = simpleOptions;
+
+                        // Construct title by removing options?
+                        // If the WHOLE string was parsed as options (every part matched), title is empty.
+                        // If some parts didn't match, they might be the title.
+
+                        // Re-evaluate title:
+                        // Split original text same way
+                        const parts = title.split(/[\n;]|\\n/);
+                        const nonOptionParts = parts.filter(part => {
+                            const trimmed = part.trim();
+                            if (!trimmed) return false;
+                            const colonIndex = trimmed.indexOf(':');
+                            return colonIndex <= 0; // Keep parts without colon or colon at start
+                        });
+
+                        title = nonOptionParts.join(' ').trim();
+                        if (!title) title = '行程選項';
                     }
                 }
 

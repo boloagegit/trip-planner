@@ -44,6 +44,19 @@ export const initialItinerary = [
           { label: 'B', value: '居酒屋' }
         ],
         image: "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=1000&auto=format&fit=crop"
+      },
+      {
+        id: '1228-5',
+        time: "22:00",
+        title: "行程選項",
+        description: "新格式測試 (New simplified format)",
+        type: "food",
+        location: "Kiyosumi-shirakawa Station",
+        options: [
+            { label: 'A', value: '池袋' },
+            { label: 'B', value: '上野' }
+        ],
+        image: "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=1000&auto=format&fit=crop"
       }
     ]
   },
