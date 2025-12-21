@@ -177,6 +177,7 @@ export const parseMatrixCSV = (data) => {
 
         itinerary.push({
             date: dateStr,
+            displayDate: dateKey,
             dayOfWeek: dayOfWeek,
             events: mergedEvents
         });
