@@ -19,16 +19,17 @@ import HelpModal from './components/HelpModal';
 import StatsModal from './components/StatsModal';
 import NotesModal from './components/NotesModal';
 import { parseMatrixCSV, extractSheetId, parseSheetUrl } from './utils/csvParser';
+import { initialItinerary } from './data/initialItinerary';
 import './App.css';
 
 function App() {
   const [itinerary, setItinerary] = useState(() => {
     try {
       const saved = localStorage.getItem('tokyo-trip-itinerary');
-      return saved ? JSON.parse(saved) : [];
+      return saved ? JSON.parse(saved) : initialItinerary;
     } catch (e) {
       console.error('Failed to parse itinerary from local storage', e);
-      return [];
+      return initialItinerary;
     }
   });
 
@@ -49,6 +50,24 @@ function App() {
       return { title: 'Trip Planner', startDate: '', endDate: '' };
     }
   });
+
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    try {
+      const saved = localStorage.getItem('tokyo-trip-selections');
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      console.error('Failed to parse selections from local storage', e);
+      return {};
+    }
+  });
+
+  const handleOptionSelect = (eventId, optionLabel) => {
+    setSelectedOptions(prev => {
+      const newSelections = { ...prev, [eventId]: optionLabel };
+      localStorage.setItem('tokyo-trip-selections', JSON.stringify(newSelections));
+      return newSelections;
+    });
+  };
 
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('tokyo-trip-theme');
@@ -482,6 +501,8 @@ function App() {
                     day={day}
                     index={index}
                     id={`day-${index}`}
+                    selectedOptions={selectedOptions}
+                    onOptionSelect={handleOptionSelect}
                   />
                 ))
               ) : (

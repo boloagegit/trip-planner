@@ -2,12 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faUtensils, faTrain, faBed, faBagShopping, faMapPin, faLocationArrow, faLink
+    faUtensils, faTrain, faBed, faBagShopping, faMapPin, faLocationArrow, faLink, faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import './EventCard.css';
 
-const EventCard = ({ event }) => {
-    const { title, displayTime, time, type, description, location } = event;
+const EventCard = ({ event, selectedOptions, onOptionSelect }) => {
+    const { title, displayTime, time, type, description, location, options, id } = event;
 
     const getTypeIcon = (type) => {
         switch (type) {
@@ -113,6 +113,26 @@ const EventCard = ({ event }) => {
                 </div>
 
                 {cleanDescription && <p className="event-description">{cleanDescription}</p>}
+
+                {/* Options List */}
+                {options && (
+                    <div className="event-options-list">
+                        {options.map((opt, idx) => {
+                            const isSelected = selectedOptions && selectedOptions[id] === opt.label;
+                            return (
+                                <button
+                                    key={idx}
+                                    className={`event-option-item ${isSelected ? 'selected' : ''}`}
+                                    onClick={() => onOptionSelect && onOptionSelect(id, opt.label)}
+                                >
+                                    <div className="option-label">{opt.label}</div>
+                                    <div className="option-value">{opt.value}</div>
+                                    {isSelected && <FontAwesomeIcon icon={faCheck} className="option-check" />}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* Action Buttons Container */}
                 {(allMapLocations.length > 0 || allUrls.length > 0) && (

@@ -127,6 +127,72 @@
     /* Indent to align with title */
 }
 
+.event-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 2.5rem;
+    margin-top: 0.5rem;
+}
+
+.event-option-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    position: relative;
+    font-family: inherit;
+    color: var(--text-primary);
+}
+
+.event-option-item:hover {
+    background: var(--bg-card);
+    border-color: var(--text-muted);
+}
+
+.event-option-item.selected {
+    background: var(--primary-color, #3b82f6);
+    color: white;
+    border-color: transparent;
+}
+
+.event-option-item.selected .option-label {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.event-option-item.selected .option-value {
+    color: white;
+}
+
+.option-label {
+    background: var(--bg-card);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    min-width: 2rem;
+    text-align: center;
+}
+
+.option-value {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.option-check {
+    font-size: 1rem;
+    color: white;
+}
+
 .event-meta {
     display: flex;
     align-items: center;
@@ -177,7 +243,8 @@
 @media (max-width: 768px) {
 
     .event-description,
-    .event-meta {
+    .event-meta,
+    .event-options-list {
         padding-left: 0;
     }
 }
