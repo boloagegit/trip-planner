@@ -21,7 +21,7 @@ const DayView = ({ day, id, selectedOptions, onOptionSelect }) => {
       className="day-column"
     >
       <div className="day-header">
-        <h2 className="day-date">{day.date}</h2>
+        <h2 className="day-date">{day.displayDate || day.date}</h2>
         <span className="day-weekday">{day.dayOfWeek}</span>
       </div>
 
