@@ -110,6 +110,10 @@ export const parseMatrixCSV = (data) => {
                 // If options are found, strip them from the title
                 if (options) {
                     title = title.replace(/\[\s*(\{.*?\})\s*\]/, '').trim();
+                    // If title becomes empty (e.g. the cell was just "[{...}]"), set a default
+                    if (!title) {
+                        title = '行程選項';
+                    }
                 }
 
                 eventsByDate[dateKey].push({
