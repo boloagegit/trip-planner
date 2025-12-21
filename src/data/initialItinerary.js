@@ -35,7 +35,7 @@ export const initialItinerary = [
       {
         id: '1228-4',
         time: "21:00",
-        title: "宵夜選項 [{A: 拉麵}, {B: 居酒屋}]",
+        title: "宵夜選項",
         description: "想吃什麼就吃什麼",
         type: "food",
         location: "Kiyosumi-shirakawa Station",

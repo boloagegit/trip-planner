@@ -104,8 +104,13 @@ export const parseMatrixCSV = (data) => {
         dateKeys.forEach(dateKey => {
             const content = row[dateKey];
             if (content && content.trim()) {
-                const title = content.trim();
+                let title = content.trim();
                 const options = parseOptions(title);
+
+                // If options are found, strip them from the title
+                if (options) {
+                    title = title.replace(/\[\s*(\{.*?\})\s*\]/, '').trim();
+                }
 
                 eventsByDate[dateKey].push({
                     id: `sheet-${rowIndex}-${dateKey}`,
