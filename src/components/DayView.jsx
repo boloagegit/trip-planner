@@ -10,7 +10,7 @@ const EMPTY_DAY_MESSAGES = {
   line2: '好好休息一下吧！'
 };
 
-const DayView = ({ day, id }) => {
+const DayView = ({ day, id, selectedOptions, onOptionSelect }) => {
   return (
     <motion.div
       id={id}
@@ -35,6 +35,8 @@ const DayView = ({ day, id }) => {
           >
             <EventCard
               event={event}
+              selectedOptions={selectedOptions}
+              onOptionSelect={onOptionSelect}
             />
           </motion.div>
         ))}

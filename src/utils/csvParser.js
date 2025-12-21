@@ -36,6 +36,46 @@ export const extractSheetId = (url) => {
 };
 
 /**
+ * Parses option syntax like "Title [{A: Option1}, {B: Option2}]"
+ * Returns an array of options or null if no options found.
+ * @param {string} text - The input text to parse
+ * @returns {Array|null} - Array of {label, value} objects or null
+ */
+const parseOptions = (text) => {
+    if (!text) return null;
+
+    // Look for pattern starting with [ and ending with ] containing { key: value } structures
+    const match = text.match(/\[\s*(\{.*?\})\s*\]/);
+    if (!match) return null;
+
+    const fullMatch = match[0]; // The whole [{...}, {...}] block
+
+    // Remove outer brackets [ ]
+    const content = fullMatch.substring(1, fullMatch.length - 1);
+
+    // Split by "}," or "} ,"
+    const rawOptions = content.split(/\}\s*,\s*\{/);
+
+    const options = rawOptions.map(raw => {
+        // Clean up leading/trailing braces
+        let cleaned = raw.trim();
+        if (cleaned.startsWith('{')) cleaned = cleaned.substring(1);
+        if (cleaned.endsWith('}')) cleaned = cleaned.substring(0, cleaned.length - 1);
+
+        // Split by first colon
+        const separatorIndex = cleaned.indexOf(':');
+        if (separatorIndex === -1) return null;
+
+        const label = cleaned.substring(0, separatorIndex).trim();
+        const value = cleaned.substring(separatorIndex + 1).trim();
+
+        return { label, value };
+    }).filter(opt => opt !== null);
+
+    return options.length > 0 ? options : null;
+};
+
+/**
  * Parses the matrix-style CSV data into the application's itinerary format.
  * @param {Array} data - The parsed CSV data array (array of objects).
  * @returns {Array} - The formatted itinerary array.
@@ -64,10 +104,14 @@ export const parseMatrixCSV = (data) => {
         dateKeys.forEach(dateKey => {
             const content = row[dateKey];
             if (content && content.trim()) {
+                const title = content.trim();
+                const options = parseOptions(title);
+
                 eventsByDate[dateKey].push({
                     id: `sheet-${rowIndex}-${dateKey}`,
                     time: time.trim(),
-                    title: content.trim(),
+                    title: title,
+                    options: options,
                     description: '', // Description is merged into title in this simple format
                     type: inferType(content),
                     location: '',
